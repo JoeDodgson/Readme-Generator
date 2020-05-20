@@ -29,7 +29,7 @@ DONE -Store Github profile image and email
 DONE -Use fs writeFile to create a readme.md and write the content of the readme
 DONE -Give a message to tell the user the file has been created.
 DONE -Turn the function into an async await
--Ensure there is a catch to handle errors
+DONE -Ensure there is a catch to handle errors
 -Add a welcome message at the start of the createReadme function
 
 Optional:

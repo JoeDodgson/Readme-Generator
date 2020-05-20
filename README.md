@@ -1,28 +1,28 @@
 # a
 
 ## Description:
-b
+a
 
 ## Table of contents:
-c
+a
 
 ## Installation:
-d
+a
 
 ## Usage:
-e
+a
 
 ## Author:
-Joe
-Github username: JoeDodgson
-https://avatars2.githubusercontent.com/u/50573262?v=4
+a
+Github username: a
+https://avatars2.githubusercontent.com/u/1410106?v=4
 
 ## Contributing:
-f
+a
 
 ## Tests:
 The project passed the following tests:
-g
+a
 
 ## Contact:
-h
+a

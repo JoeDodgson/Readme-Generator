@@ -6,13 +6,41 @@ const util = require("util");
 
 // Promisify the writeFile function
 const writeFileAsync = util.promisify(fs.writeFile);
+const readFileAsync = util.promisify(fs.readFile);
 
 // Define an async await function which creates a readme based on used input
 async function createReadme() {
     try {
 
         // Message: welcome to the readme generator. Press enter to continue
-        
+        const { continueYN } = await inquirer.prompt({
+            type: "list",
+            message: "Welcome to the readme generator. Would you like to generate a readme?",
+            name: "continueYN",
+            choices: ["Yes", "No"]
+        });
+
+        if (continueYN === "No") {
+            console.log("Ok, well if you change your mind you know where to find me...");
+            return;
+        };
+
+        // Check if there is an existing README file which may be overwritten.
+        if(fs.existsSync("README.md")) {
+            // Tell user this will overwrite existing README file. Ask if they want to continue
+            const { stillContinueYN } = await inquirer.prompt({
+                type: "list",
+                message: "You already have an existing README.md file which will be overwritten when you run this script.\nDo you want to continue?",
+                name: "stillContinueYN",
+                choices: ["Yes", "No"]
+            });
+            
+            if (stillContinueYN === "No") {
+                console.log("Come back once you have backed up your existing README.md file.");
+                return;
+            };
+        }
+
         // Using inquirer, get the input information needed from the user
         const answers = await inquirer.prompt([{
                 message: "Enter your name:",
