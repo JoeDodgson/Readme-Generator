@@ -33,8 +33,11 @@ DONE -Turn the function into an async await
 DONE -Ensure there is a catch to handle errors
 DONE -Add a welcome message at the start of the createReadme function
 DONE -Add in a check to see if a readme file already exists
+DONE -Badges functionality
+DONE -Display image correctly
+-Table of contents appears correctly
+-Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address
+-Specific extra contact details - select from a list of contact options, then prompt the user to enter something for each one selected
 
 Optional:
--Badges functionality
--Specific extra contact details - select from a list of contact options, then prompt the user to enter something for each one selected
--Are you happy for your github email address to be used as your contact email?
+-Select the readme from a list of the user's repos on github

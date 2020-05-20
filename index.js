@@ -102,12 +102,11 @@ async function createReadme() {
         const { data } = await axios.get(queryUrl);
 
         // Use the Github username and repo name to form a license shield URL
-        const licenseShieldURL = `https://img.shields.io/github/license/${answers.username}/${answers.repo}?logoColor=%23ff0000`
-        // Badge: ![GitHub](https://img.shields.io/github/license/JoeDodgson/Readme-Generator?logoColor=%23ff0000)
+        const licenseShieldMD = `![GitHub](https://img.shields.io/github/license/${answers.username}/${answers.repo}?logoColor=%23ff0000)`
 
         // Create a readme file and write the content based on user input
         const readmeContent = 
-        `# ${answers.title}\n\n## Description:\n${answers.description}\n\n## Table of contents:\n${answers.contents}\n\n## Installation:\n${answers.installation}\n\n## Usage:\n${answers.usage}\n\n## Author:\n${answers.name}\nGithub username: ${answers.username}\n${data.avatar_url}\n\n## Contributing:\n${answers.contributing}\n\n##License:\n${licenseShieldURL}\n\n## Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## Contact:\n${answers.contact}`;
+        `# ${answers.title}\n\n## Description:\n${answers.description}\n\n## Table of contents:\n${answers.contents}\n\n## Installation:\n${answers.installation}\n\n## Usage:\n${answers.usage}\n\n## Author:\n${answers.name}\nGithub username: ${answers.username}\n<img src="${data.avatar_url}">\n\n## Contributing:\n${answers.contributing}\n\n## License:\n\n${licenseShieldMD}\n\n## Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## Contact:\n${answers.contact}`;
         
         const file = await writeFileAsync(readmeFileName, readmeContent);
 
