@@ -12,43 +12,43 @@ const writeFileAsync = util.promisify(fs.writeFile);
 // Using inquirer, get the input information needed from the user
 inquirer
   .prompt([{
-    message: "Enter your name",
+    message: "Enter your name:",
     name: "name"
   },
   {
-    message: "Enter your GitHub username",
+    message: "Enter your GitHub username:",
     name: "username"
   },
   {
-    message: "Enter a project title",
+    message: "Enter a project title:",
     name: "title"
   },
   {
-    message: "Enter a project description",
+    message: "Enter a project description:",
     name: "description"
   },
   {
-    message: "Enter a table of contents",
+    message: "Enter a table of contents:",
     name: "contents"
   },
   {
-    message: "Enter any installation details",
+    message: "Enter any installation details:",
     name: "installation"
   },
   {
-    message: "Enter any usage information",
+    message: "Enter any usage information:",
     name: "usage"
   },
   {
-    message: "Enter any contributing information",
+    message: "Enter any contributing information:",
     name: "contributing"
   },
   {
-    message: "Enter any tests that the project has passed",
+    message: "Enter any tests that the project has passed:",
     name: "tests"
   },
   {
-    message: "Enter any additional contact information you would like to include",
+    message: "Enter any additional contact information you would like to include:",
     name: "contact"
   }]
   )
