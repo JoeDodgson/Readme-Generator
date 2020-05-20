@@ -4,11 +4,18 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 const util = require("util");
 
+// Promisify the writeFile function
+const writeFileAsync = util.promisify(fs.writeFile);
+
 // Message: welcome to the readme generator. Press enter to continue
 
 // Using inquirer, get the input information needed from the user
 inquirer
   .prompt([{
+    message: "Enter your name",
+    name: "name"
+  },
+  {
     message: "Enter your GitHub username",
     name: "username"
   },
@@ -64,18 +71,13 @@ inquirer
       })
       // Create a readme file and write the content based on user input
       .then(data => {
-
-        fs.writeFile("repos.txt"), repoNamesStr, function(err) {
-            if (err) {
-            throw err;
-            }
-
-            console.log(`Saved ${repoNames.length} repos`);
-        };
-
-      // Use fs writeFile to write content of the readme
-
+        var readmeContent = 
+        `# ${data.answers.title}\n\n## Description:\n${data.answers.description}\n\n## Table of contents:\n${data.answers.contents}\n\n## Installation:\n${data.answers.installation}\n\n## Usage:\n${data.answers.usage}\n\n## Author:\n${data.answers.name}\nGithub username: ${data.answers.username}\n${data.avatar_url}\n\n## Contributing:\n${data.answers.contributing}\n\n## Tests:\nThe project passed the following tests:\n${data.answers.tests}\n\n## Contact:\n${data.answers.contact}`;
+        
+        writeFileAsync("readme.md", readmeContent)
+        .then(file => {
+            // Give a message to tell the user the file has been created.
+            console.log("Created readme file");
+        });
       })
-      // Give a message to tell the user the file has been created.
-    
-  })
+  });
