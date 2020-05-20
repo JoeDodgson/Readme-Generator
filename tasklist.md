@@ -1,6 +1,6 @@
 Tasks
 DONE -Pseudocode the logic of the functionality
--Create required files
+DONE -Create required files
 -npm init
 -install the required node modules
 -Create a .gitignore and add files and folders which we don't want to upload onto the repo
