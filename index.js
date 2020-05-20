@@ -70,10 +70,6 @@ async function createReadme() {
                 name: "description"
             },
             {
-                message: "Enter a table of contents:",
-                name: "contents"
-            },
-            {
                 message: "Enter any installation details:",
                 name: "installation"
             },
