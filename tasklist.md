@@ -1,9 +1,9 @@
 Tasks
 DONE -Pseudocode the logic of the functionality
 DONE -Create required files
--npm init
--install the required node modules
--Create a .gitignore and add files and folders which we don't want to upload onto the repo
+DONE -npm init
+DONE -install the required node modules
+DONE -Create a .gitignore and add files and folders which we don't want to upload onto the repo
 -Write the JS file
 -Structure JS to move variable declaration to the top
 -Comment through all the code
@@ -12,8 +12,8 @@ DONE -Create required files
 
 
 Pseudocode:
--Require in the different node modules
--Prompt the user to provide:
+DONE -Require in the different node modules
+DONE -Prompt the user to provide:
     -Github username
     -Project title
     -Description
@@ -29,3 +29,8 @@ Pseudocode:
 -Use fs createFile to create a readme.md
 -Use fs writeFile to write content of the readme
 -Give a message to tell the user the file has been created.
+
+Optional:
+-Badges functionality
+-Specific extra contact details - select from a list of contact options, then prompt the user to enter something for each one selected
+-Are you happy for your github email address to be used as your contact email?
