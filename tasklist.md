@@ -24,8 +24,8 @@ DONE -Prompt the user to provide:
     -Tests
     -FAQs
     -contact
--Axios to perform API call using github API
--Store Github profile image and email
+DONE -Axios to perform API call using github API
+DONE -Store Github profile image and email
 -Use fs createFile to create a readme.md
 -Use fs writeFile to write content of the readme
 -Give a message to tell the user the file has been created.
