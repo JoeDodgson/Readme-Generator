@@ -25,18 +25,25 @@ async function createReadme() {
             return;
         };
 
+        // Using inquirer, get the input information needed from the user
+        const { readmeFileName } = await inquirer.prompt([{
+            message: "Enter a file name for your new readme (remember to include the file extension, e.g. README.md):",
+            name: "readmeFileName"
+            }
+        ]);
+
         // Check if there is an existing README file which may be overwritten.
-        if(fs.existsSync("README.md")) {
+        if(fs.existsSync(readmeFileName)) {
             // Tell user this will overwrite existing README file. Ask if they want to continue
             const { stillContinueYN } = await inquirer.prompt({
                 type: "list",
-                message: "You already have an existing README.md file which will be overwritten when you run this script.\nDo you want to continue?",
+                message: `You already have an existing file named ${readmeFileName} which will be overwritten when you run this script.\nDo you want to continue?`,
                 name: "stillContinueYN",
                 choices: ["Yes", "No"]
             });
             
             if (stillContinueYN === "No") {
-                console.log("Come back once you have backed up your existing README.md file.");
+                console.log("Come back once you have backed up your existing file.");
                 return;
             };
         }
@@ -102,10 +109,10 @@ async function createReadme() {
         const readmeContent = 
         `# ${answers.title}\n\n## Description:\n${answers.description}\n\n## Table of contents:\n${answers.contents}\n\n## Installation:\n${answers.installation}\n\n## Usage:\n${answers.usage}\n\n## Author:\n${answers.name}\nGithub username: ${answers.username}\n${data.avatar_url}\n\n## Contributing:\n${answers.contributing}\n\n##License:\n${licenseShieldURL}\n\n## Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## Contact:\n${answers.contact}`;
         
-        const file = await writeFileAsync("readme.md", readmeContent);
+        const file = await writeFileAsync(readmeFileName, readmeContent);
 
         // Give a message to tell the user the file has been created.
-        console.log("Your README.md file was created successfully!");
+        console.log("Your README file was created successfully!");
 
     } catch (error) {
         console.log(error);
