@@ -1,28 +1,31 @@
-# a
+# bluh
 
 ## Description:
-a
+sdfn
 
 ## Table of contents:
-a
+asdf
 
 ## Installation:
-a
+asdf
 
 ## Usage:
-a
+asdf
 
 ## Author:
-a
-Github username: a
-https://avatars2.githubusercontent.com/u/1410106?v=4
+blah
+Github username: JoeDodgson
+https://avatars2.githubusercontent.com/u/50573262?v=4
 
 ## Contributing:
-a
+asdf
+
+##License:
+https://img.shields.io/github/license/JoeDodgson/Readme-Generator?logoColor=%23ff0000
 
 ## Tests:
 The project passed the following tests:
-a
+asdf
 
 ## Contact:
-a
+saf

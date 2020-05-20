@@ -55,6 +55,10 @@ async function createReadme() {
                 name: "title"
             },
             {
+                message: "Enter the name of the project repository as it appears on Github:",
+                name: "repo"
+            },
+            {
                 message: "Enter a project description:",
                 name: "description"
             },
@@ -90,14 +94,18 @@ async function createReadme() {
         // Perform a .get method API call using axios, feeding in the queryURL
         const { data } = await axios.get(queryUrl);
 
+        // Use the Github username and repo name to form a license shield URL
+        const licenseShieldURL = `https://img.shields.io/github/license/${answers.username}/${answers.repo}?logoColor=%23ff0000`
+        // Badge: ![GitHub](https://img.shields.io/github/license/JoeDodgson/Readme-Generator?logoColor=%23ff0000)
+
         // Create a readme file and write the content based on user input
         const readmeContent = 
-        `# ${answers.title}\n\n## Description:\n${answers.description}\n\n## Table of contents:\n${answers.contents}\n\n## Installation:\n${answers.installation}\n\n## Usage:\n${answers.usage}\n\n## Author:\n${answers.name}\nGithub username: ${answers.username}\n${data.avatar_url}\n\n## Contributing:\n${answers.contributing}\n\n## Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## Contact:\n${answers.contact}`;
+        `# ${answers.title}\n\n## Description:\n${answers.description}\n\n## Table of contents:\n${answers.contents}\n\n## Installation:\n${answers.installation}\n\n## Usage:\n${answers.usage}\n\n## Author:\n${answers.name}\nGithub username: ${answers.username}\n${data.avatar_url}\n\n## Contributing:\n${answers.contributing}\n\n##License:\n${licenseShieldURL}\n\n## Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## Contact:\n${answers.contact}`;
         
         const file = await writeFileAsync("readme.md", readmeContent);
 
         // Give a message to tell the user the file has been created.
-        console.log("Created readme file");
+        console.log("Your README.md file was created successfully!");
 
     } catch (error) {
         console.log(error);

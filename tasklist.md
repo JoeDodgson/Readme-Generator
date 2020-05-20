@@ -6,6 +6,7 @@ DONE -install the required node modules
 DONE -Create a .gitignore and add files and folders which we don't want to upload onto the repo
 -Write the JS file
 -Structure JS to move variable declaration to the top
+-Change as much to ES6 as possible
 -Comment through all the code
 -Record a video showing the tool working
 -Write the readme
@@ -30,7 +31,8 @@ DONE -Use fs writeFile to create a readme.md and write the content of the readme
 DONE -Give a message to tell the user the file has been created.
 DONE -Turn the function into an async await
 DONE -Ensure there is a catch to handle errors
--Add a welcome message at the start of the createReadme function
+DONE -Add a welcome message at the start of the createReadme function
+DONE -Add in a check to see if a readme file already exists
 
 Optional:
 -Badges functionality
