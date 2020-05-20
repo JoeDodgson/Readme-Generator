@@ -21,7 +21,7 @@ https://avatars2.githubusercontent.com/u/50573262?v=4
 asdf
 
 ##License:
-https://img.shields.io/github/license/JoeDodgson/Readme-Generator?logoColor=%23ff0000
+![GitHub](https://img.shields.io/github/license/JoeDodgson/Readme-Generator?logoColor=%23ff0000)
 
 ## Tests:
 The project passed the following tests:
