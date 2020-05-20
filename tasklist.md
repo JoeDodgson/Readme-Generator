@@ -29,6 +29,7 @@ DONE -Store Github profile image and email
 -Use fs createFile to create a readme.md
 -Use fs writeFile to write content of the readme
 -Give a message to tell the user the file has been created.
+-Turn the function into an async await
 
 Optional:
 -Badges functionality

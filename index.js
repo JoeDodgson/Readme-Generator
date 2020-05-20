@@ -2,6 +2,7 @@
 const axios = require("axios");
 const fs = require("fs");
 const inquirer = require("inquirer");
+const util = require("util");
 
 // Message: welcome to the readme generator. Press enter to continue
 
@@ -54,13 +55,27 @@ inquirer
     axios
       .get(queryUrl)
       .then(response => {
-          // Store the user's profile image and email
-        userImageURL = response.avatar_url;
-        userGithubEmail = response.email;
-      });
-  });
+        // Store the user's profile image and email
+        var data = {};
+        data.answers = answers;
+        data.userImageURL = response.data.avatar_url;
+        data.userGithubEmail = response.data.email;
+        return data;
+      })
+      // Create a readme file and write the content based on user input
+      .then(data => {
 
+        fs.writeFile("repos.txt"), repoNamesStr, function(err) {
+            if (err) {
+            throw err;
+            }
 
-// Use fs createFile to create a readme.md
-// Use fs writeFile to write content of the readme
-// Give a message to tell the user the file has been created.
+            console.log(`Saved ${repoNames.length} repos`);
+        };
+
+      // Use fs writeFile to write content of the readme
+
+      })
+      // Give a message to tell the user the file has been created.
+    
+  })
