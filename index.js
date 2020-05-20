@@ -106,7 +106,7 @@ async function createReadme() {
 
         // Create a readme file and write the content based on user input
         const readmeContent = 
-        `# ${answers.title}\n\n## Description:\n${answers.description}\n\n## Table of contents:\n${answers.contents}\n\n## Installation:\n${answers.installation}\n\n## Usage:\n${answers.usage}\n\n## Author:\n${answers.name}\nGithub username: ${answers.username}\n<img src="${data.avatar_url}">\n\n## Contributing:\n${answers.contributing}\n\n## License:\n\n${licenseShieldMD}\n\n## Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## Contact:\n${answers.contact}`;
+        `# ${answers.title}\n\n## Table of contents:\n1. Description\n2. Installation\n3. Usage\n4. Author\n5. Contributing\n6. License\n7. Tests\n8. Contact\n\n## 1. Description:\n${answers.description}\n\n## 2. Installation:\n${answers.installation}\n\n## 3. Usage:\n${answers.usage}\n\n## 4. Author:\n${answers.name}\nGithub username: ${answers.username}\n<img src="${data.avatar_url}">\n\n## 5. Contributing:\n${answers.contributing}\n\n## 6. License:\n\n${licenseShieldMD}\n\n## 7. Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## 8. Contact:\n${answers.contact}`;
         
         const file = await writeFileAsync(readmeFileName, readmeContent);
 
