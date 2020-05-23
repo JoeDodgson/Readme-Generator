@@ -33,12 +33,14 @@ async function createReadme() {
             }
         ]);
 
+        const readmeFilePath = `./Generated_README/${readmeFileName}`;
+
         // Check if there is an existing README file which may be overwritten.
-        if(fs.existsSync(readmeFileName)) {
+        if(fs.existsSync(readmeFilePath)) {
             // Tell user this will overwrite existing README file. Ask if they want to continue
             const { stillContinueYN } = await inquirer.prompt({
                 type: "list",
-                message: `You already have an existing file named ${readmeFileName} which will be overwritten when you run this script.\nDo you want to continue?`,
+                message: `A file named ${readmeFileName} already exists in the Generated README folder.\nThis will be overwritten when you run this script.\nDo you want to continue?`,
                 name: "stillContinueYN",
                 choices: ["Yes", "No"]
             });
@@ -125,7 +127,7 @@ async function createReadme() {
         const readmeContent = 
         `# ${answers.title}\n\n## Table of contents:\n1. Description\n2. Installation\n3. Usage\n4. Author\n5. Contributing\n6. License\n7. Tests\n8. Contact\n\n## 1. Description:\n${answers.description}\n\n## 2. Installation:\n${answers.installation}\n\n## 3. Usage:\n${answers.usage}\n\n## 4. Author:\n${answers.name}\nGithub username: ${answers.username}\n<img src="${data.avatar_url}">\n\n## 5. Contributing:\n${answers.contributing}\n\n## 6. License:\n\n${licenseShieldMD}\n\n## 7. Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## 8. Contact:\nFor any questions about this project, please contact ${answers.name} at the following email address:\n${email.address}`;
         
-        const file = await writeFileAsync(readmeFileName, readmeContent);
+        const file = await writeFileAsync(readmeFilePath, readmeContent);
 
         // Give a message to tell the user the file has been created.
         console.log("Your README file was created successfully!");

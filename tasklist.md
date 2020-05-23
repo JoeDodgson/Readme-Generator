@@ -6,8 +6,8 @@ DONE -install the required node modules
 DONE -Create a .gitignore and add files and folders which we don't want to upload onto the repo
 DONE -Write the JS file
 DONE -Structure JS to move variable declaration to the top
--Change as much to ES6 as possible
--Comment through all the code
+DONE -Change as much to ES6 as possible
+DONE -Comment through all the code
 -Record a video showing the tool working
 -Write the readme
 
