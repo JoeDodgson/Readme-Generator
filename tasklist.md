@@ -8,7 +8,7 @@ DONE -Write the JS file
 DONE -Structure JS to move variable declaration to the top
 DONE -Change as much to ES6 as possible
 DONE -Comment through all the code
--Record a video showing the tool working
+DONE -Record a video showing the tool working
 -Write the readme
 
 
