@@ -1,4 +1,4 @@
-# a
+# readme-generator
 
 ## Table of contents:
 1. Description
@@ -11,29 +11,30 @@
 8. Contact
 
 ## 1. Description:
-a
+Generates a readme
 
 ## 2. Installation:
-a
+None
 
 ## 3. Usage:
-a
+Open source
 
 ## 4. Author:
-Joe
+Joe Dodgson
 Github username: JoeDodgson
 <img src="https://avatars2.githubusercontent.com/u/50573262?v=4">
 
 ## 5. Contributing:
-a
+Just myself
 
 ## 6. License:
 
-![GitHub](https://img.shields.io/github/license/JoeDodgson/a?logoColor=%23ff0000)
+![GitHub](https://img.shields.io/github/license/JoeDodgson/readme-generator?logoColor=%23ff0000)
 
 ## 7. Tests:
 The project passed the following tests:
-a
+test1 test2
 
 ## 8. Contact:
-undefined
+For any questions about this project, please contact me at any of the following:
+Email: j.dodgson@live.co.uk

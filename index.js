@@ -4,9 +4,10 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 const util = require("util");
 
+const email = {};
+
 // Promisify the writeFile function
 const writeFileAsync = util.promisify(fs.writeFile);
-const readFileAsync = util.promisify(fs.readFile);
 
 // Define an async await function which creates a readme based on used input
 async function createReadme() {
@@ -82,7 +83,7 @@ async function createReadme() {
                 name: "contributing"
             },
             {
-                message: "Enter any tests that the project has passed:",
+                message: "Enter information about the testing carried out on the project:",
                 name: "tests"
             }
         ]);
@@ -104,33 +105,25 @@ async function createReadme() {
                 }
             )
             if(includeGithubEmail.YN === "Yes"){
-                const email = {
-                    address: data.email
-                }
+                email.address =  data.email;
             }
         }
 
         // If no Github email exists or user chose not to include, ask to provide alternative email
         if(!data.email || includeGithubEmail.YN === "No"){
-            const email = await inquirer.prompt({
+            const alternativeEmail = await inquirer.prompt({
                 message: "Please enter a contact email address:",
                 name: "address"
             });
+            email.address = alternativeEmail.address;
         }
-
-        // {
-        //     message: "Please select any additional types of contact information you would like to include:",
-        //     name: "contact"
-        // }
-
-        console.log(data);
 
         // Use the Github username and repo name to form a license shield URL
         const licenseShieldMD = `![GitHub](https://img.shields.io/github/license/${answers.username}/${answers.repo}?logoColor=%23ff0000)`
 
         // Create a readme file and write the content based on user input
         const readmeContent = 
-        `# ${answers.title}\n\n## Table of contents:\n1. Description\n2. Installation\n3. Usage\n4. Author\n5. Contributing\n6. License\n7. Tests\n8. Contact\n\n## 1. Description:\n${answers.description}\n\n## 2. Installation:\n${answers.installation}\n\n## 3. Usage:\n${answers.usage}\n\n## 4. Author:\n${answers.name}\nGithub username: ${answers.username}\n<img src="${data.avatar_url}">\n\n## 5. Contributing:\n${answers.contributing}\n\n## 6. License:\n\n${licenseShieldMD}\n\n## 7. Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## 8. Contact:\nFor any questions about this project, please contact me at any of the following:\nEmail:${email.address}`;
+        `# ${answers.title}\n\n## Table of contents:\n1. Description\n2. Installation\n3. Usage\n4. Author\n5. Contributing\n6. License\n7. Tests\n8. Contact\n\n## 1. Description:\n${answers.description}\n\n## 2. Installation:\n${answers.installation}\n\n## 3. Usage:\n${answers.usage}\n\n## 4. Author:\n${answers.name}\nGithub username: ${answers.username}\n<img src="${data.avatar_url}">\n\n## 5. Contributing:\n${answers.contributing}\n\n## 6. License:\n\n${licenseShieldMD}\n\n## 7. Tests:\nThe project passed the following tests:\n${answers.tests}\n\n## 8. Contact:\nFor any questions about this project, please contact ${answers.name} at the following email address:\n${email.address}`;
         
         const file = await writeFileAsync(readmeFileName, readmeContent);
 

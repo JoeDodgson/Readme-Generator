@@ -4,8 +4,8 @@ DONE -Create required files
 DONE -npm init
 DONE -install the required node modules
 DONE -Create a .gitignore and add files and folders which we don't want to upload onto the repo
--Write the JS file
--Structure JS to move variable declaration to the top
+DONE -Write the JS file
+DONE -Structure JS to move variable declaration to the top
 -Change as much to ES6 as possible
 -Comment through all the code
 -Record a video showing the tool working
@@ -36,9 +36,10 @@ DONE -Add in a check to see if a readme file already exists
 DONE -Badges functionality
 DONE -Display image correctly
 DONE -Table of contents appears correctly
--Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address
--Specific extra contact details - select from a list of contact options, then prompt the user to enter something for each one selected
--Turn yes-no's into confirms
+DONE -Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address
 
 Optional:
 -Select the readme from a list of the user's repos on github
+-Specific extra contact details - select from a list of contact options, then prompt the user to enter something for each one selected
+-Turn yes-no's into confirms
+-Refactor: Use object creator functions to create similar objects
