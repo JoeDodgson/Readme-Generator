@@ -37,8 +37,9 @@ DONE -Badges functionality
 DONE -Display image correctly
 DONE -Table of contents appears correctly
 DONE -Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address
+-Replace each prompt question object with a variable
+-If the user does not provide an answer to each question, display a message saying "You must enter a value" and re-display the question
 
-Optional:
 -Select the readme from a list of the user's repos on github
 -Specific extra contact details - select from a list of contact options, then prompt the user to enter something for each one selected
 -Turn yes-no's into confirms
