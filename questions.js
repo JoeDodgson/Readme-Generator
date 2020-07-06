@@ -1,39 +1,39 @@
 // Class for all questions
-class PromptQuestion {
+class InputQuestion {
     constructor (message, name) {
         this.message = message;
         this.name = name;
     }
 
     returnString() {
-        return `{message : "${this.message}",
-        name : "${this.name}"}`
+        return JSON.parse(`{"message" : "${this.message}",
+        "name" : "${this.name}"}`);
     }
 }
 
-// Class for 'choices' type questions
-class ChoiceQuestion extends PromptQuestion {
+// Class for 'list' type questions
+class ListQuestion extends InputQuestion {
     constructor (message, name, choices) {
         super(message, name);
-        this.type = "choice";
+        this.type = "list";
         this.choices = choices;
     }
 
     stringifyChoices() {
-        return this.choices.join('","') + '"';
+        return this.choices.join('","');
     }
 
     returnString() {
-        return JSON.parse(`{"type" : "choice",
+        return JSON.parse(`{"type" : "${this.type}",
         "message" : "${this.message}",
         "name" : "${this.name}",
-        "choices" : ["${this.stringifyChoices()}]}`);
+        "choices" : ["${this.stringifyChoices()}"]}`);
     }
 }
 
 
 // Export generated questions array
 module.exports = {
-    PromptQuestion : PromptQuestion,
-    ChoiceQuestion : ChoiceQuestion
+    InputQuestion : InputQuestion,
+    ListQuestion : ListQuestion
 };
