@@ -45,7 +45,7 @@ The generated README file is saved in the Generated_README subfolder
 
 See it in action:
 
-![The readme generator in use](readme-generator.gif)
+![The readme generator in use](./readme-generator.gif)
 
 
 ## Author
