@@ -7,27 +7,27 @@ const validator = require("validator");
 
 // Require in local files
 const questions = require("./questions");
-const ChoiceQuestion = questions.ChoiceQuestion;
-const PromptQuestion = questions.PromptQuestion;
+const ListQuestion = questions.ListQuestion;
+const InputQuestion = questions.InputQuestion;
 
 // Declare variables to be used in the app
 const email = {};
 
 // Use classes required from questions.js to generate the questions
-const question1 = new ChoiceQuestion("Welcome to the readme generator. Would you like to generate a readme?", "continueYN", ["Yes", "No"]);
-const question2 = new PromptQuestion("Enter a file name for your new readme (remember to include the file extension, e.g. README.md):", "readmeFileName");
-const question4 = new PromptQuestion("Enter your name:", "name");
-const question5 = new PromptQuestion("Enter your GitHub username:", "username");
-const question6 = new PromptQuestion("Enter a project title:", "title");
-const question7 = new PromptQuestion("Enter the name of the project repository as it appears on Github:", "repo");
-const question8 = new PromptQuestion("Enter a project description:", "description");
-const question9 = new PromptQuestion("Enter any installation details:", "installation");
-const question10 = new PromptQuestion("Enter any usage information:", "usage");
-const question11 = new PromptQuestion("Enter any contributing information:", "contributing");
-const question12 = new PromptQuestion("Enter information about the testing carried out on the project:", "tests");
-const question13 = new ChoiceQuestion("Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address", "YN", ["Yes", "No"]);
-const question14 = new PromptQuestion("Please enter a contact email address:", "address");
-const question15 = new PromptQuestion("The email address you entered is not valid. Please enter a valid email address:", "address");
+const question1 = new ListQuestion("Welcome to the readme generator. Would you like to generate a readme?", "continueYN", ["Yes", "No"]);
+const question2 = new InputQuestion("Enter a file name for your new readme (remember to include the file extension, e.g. README.md):", "readmeFileName");
+const question4 = new InputQuestion("Enter your name:", "name");
+const question5 = new InputQuestion("Enter your GitHub username:", "username");
+const question6 = new InputQuestion("Enter a project title:", "title");
+const question7 = new InputQuestion("Enter the name of the project repository as it appears on Github:", "repo");
+const question8 = new InputQuestion("Enter a project description:", "description");
+const question9 = new InputQuestion("Enter any installation details:", "installation");
+const question10 = new InputQuestion("Enter any usage information:", "usage");
+const question11 = new InputQuestion("Enter any contributing information:", "contributing");
+const question12 = new InputQuestion("Enter information about the testing carried out on the project:", "tests");
+const question13 = new ListQuestion("Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address", "YN", ["Yes", "No"]);
+const question14 = new InputQuestion("Please enter a contact email address:", "address");
+const question15 = new InputQuestion("The email address you entered is not valid. Please enter a valid email address:", "address");
 
 // Promisify the writeFile function
 const writeFileAsync = util.promisify(fs.writeFile);
@@ -35,7 +35,6 @@ const writeFileAsync = util.promisify(fs.writeFile);
 // Define an async await function which creates a readme based on user input
 async function createReadme() {
     try {
-
         // First question: would you like to generate a readme?
         const { continueYN } = await inquirer.prompt(question1.returnString());
 
@@ -45,18 +44,18 @@ async function createReadme() {
         };
 
         // Ask user to enter a file name
-        const { readmeFileName } = await inquirer.prompt(question2);
+        const { readmeFileName } = await inquirer.prompt(question2.returnString());
 
         // Use that file name to generate a file path 
         const readmeFilePath = `./Generated_README/${readmeFileName}`;
 
-        // Generate the question displays the file name that the user entered
-        const question3 = new questions.ChoiceQuestion(`A file named ${readmeFileName} already exists in the Generated README folder.\nThis will be overwritten when you run this script.\nDo you want to continue?`, "stillContinueYN", ["Yes", "No"]);
+        // Generate the question using the file name that the user entered
+        const question3 = new questions.ListQuestion(`A file named ${readmeFileName} already exists in the Generated README folder.\nThis will be overwritten when you run this script.\nDo you want to continue?`, "stillContinueYN", ["Yes", "No"]);
 
         // Check if there is an existing README file which may be overwritten
         if(fs.existsSync(readmeFilePath)) {
             // Tell user this will overwrite existing README file. Ask if they want to continue
-            const { stillContinueYN } = await inquirer.prompt(question3);
+            const { stillContinueYN } = await inquirer.prompt(question3.returnString());
             
             if (stillContinueYN === "No") {
                 console.log("Come back once you have backed up your existing file.");
@@ -65,7 +64,7 @@ async function createReadme() {
         }
 
         // Using inquirer, get the input information needed from the user
-        const answers = await inquirer.prompt([question4, question5, question6, question7, question8, question9, question10, question11, question12]);
+        const answers = await inquirer.prompt([question4.returnString(), question5.returnString(), question6.returnString(), question7.returnString(), question8.returnString(), question9.returnString(), question10.returnString(), question11.returnString(), question12.returnString()]);
 
         // Use the Github username entered by the user to form a Github API query URL
         const queryUrl = `https://api.github.com/users/${answers.username}`;
@@ -76,7 +75,7 @@ async function createReadme() {
         // Check if there is an email associated with the Github user account
         if(data.email){
             // Ask user if they want to use Github email
-            const includeGithubEmail = await inquirer.prompt(question13);
+            const includeGithubEmail = await inquirer.prompt(question13.returnString());
 
             if(includeGithubEmail.YN === "Yes"){
                 email.address =  data.email;
@@ -85,15 +84,15 @@ async function createReadme() {
 
         // If no Github email exists or user chose not to include, ask to provide alternative email
         if(!data.email || includeGithubEmail.YN === "No"){
-            // Validate that the user's email is correct
-            let alternativeEmail = await inquirer.prompt(question14);
+            // Ask the user to enter an alternative email
+            let alternativeEmail = await inquirer.prompt(question14.returnString());
 
             // Check if the user has entered a valid email address. 
-            trueEmail = validator.isEmail(alternativeEmail.address);
+            let trueEmail = validator.isEmail(alternativeEmail.address);
             
             // If user has not entered a valid email address, ask them to enter a different one
             while (!trueEmail) {
-                alternativeEmail = await inquirer.prompt(question15);
+                alternativeEmail = await inquirer.prompt(question15.returnString());
                 trueEmail = validator.isEmail(alternativeEmail.address);
             }
             email.address = alternativeEmail.address;
