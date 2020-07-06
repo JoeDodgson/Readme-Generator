@@ -3,11 +3,14 @@ const axios = require("axios");
 const fs = require("fs");
 const inquirer = require("inquirer");
 const util = require("util");
+const validator = require("validator");
+
+// Require in local files
 const questions = require("./questions");
 const ChoiceQuestion = questions.ChoiceQuestion;
 const PromptQuestion = questions.PromptQuestion;
 
-
+// Declare variables to be used in the app
 const email = {};
 
 // Use classes required from questions.js to generate the questions
@@ -24,8 +27,6 @@ const question11 = new PromptQuestion("Enter any contributing information:", "co
 const question12 = new PromptQuestion("Enter information about the testing carried out on the project:", "tests");
 const question13 = new ChoiceQuestion("Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address", "YN", ["Yes", "No"]);
 const question14 = new PromptQuestion("Please enter a contact email address:", "address");
-
-console.log(question1.returnString());
 
 // Promisify the writeFile function
 const writeFileAsync = util.promisify(fs.writeFile);
