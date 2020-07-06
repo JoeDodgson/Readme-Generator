@@ -27,6 +27,7 @@ const question11 = new PromptQuestion("Enter any contributing information:", "co
 const question12 = new PromptQuestion("Enter information about the testing carried out on the project:", "tests");
 const question13 = new ChoiceQuestion("Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address", "YN", ["Yes", "No"]);
 const question14 = new PromptQuestion("Please enter a contact email address:", "address");
+const question15 = new PromptQuestion("The email address you entered is not valid. Please enter a valid email address:", "address");
 
 // Promisify the writeFile function
 const writeFileAsync = util.promisify(fs.writeFile);
@@ -43,15 +44,16 @@ async function createReadme() {
             return;
         };
 
-        // Using inquirer, get the input information needed from the user
+        // Ask user to enter a file name
         const { readmeFileName } = await inquirer.prompt(question2);
 
+        // Use that file name to generate a file path 
         const readmeFilePath = `./Generated_README/${readmeFileName}`;
 
-        // Now that the user has entered a file name, generate the question displays that file name
+        // Generate the question displays the file name that the user entered
         const question3 = new questions.ChoiceQuestion(`A file named ${readmeFileName} already exists in the Generated README folder.\nThis will be overwritten when you run this script.\nDo you want to continue?`, "stillContinueYN", ["Yes", "No"]);
 
-        // Check if there is an existing README file which may be overwritten.
+        // Check if there is an existing README file which may be overwritten
         if(fs.existsSync(readmeFilePath)) {
             // Tell user this will overwrite existing README file. Ask if they want to continue
             const { stillContinueYN } = await inquirer.prompt(question3);
@@ -83,7 +85,17 @@ async function createReadme() {
 
         // If no Github email exists or user chose not to include, ask to provide alternative email
         if(!data.email || includeGithubEmail.YN === "No"){
-            const alternativeEmail = await inquirer.prompt(question14);
+            // Validate that the user's email is correct
+            let alternativeEmail = await inquirer.prompt(question14);
+
+            // Check if the user has entered a valid email address. 
+            trueEmail = validator.isEmail(alternativeEmail.address);
+            
+            // If user has not entered a valid email address, ask them to enter a different one
+            while (!trueEmail) {
+                alternativeEmail = await inquirer.prompt(question15);
+                trueEmail = validator.isEmail(alternativeEmail.address);
+            }
             email.address = alternativeEmail.address;
         }
 
