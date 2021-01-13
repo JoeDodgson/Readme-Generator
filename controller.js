@@ -1,47 +1,45 @@
-// Require in the node modules needed
 const axios = require("axios");
-const fs = require("fs");
 const inquirer = require("inquirer");
-const util = require("util");
 const validator = require("validator");
+const { InputQuestion, ListQuestion, writeFileAsync, questionData } = require("./model");
 
-// Require in local files
-const questions = require("./questions");
-const ListQuestion = questions.ListQuestion;
-const InputQuestion = questions.InputQuestion;
-
-// Declare variables to be used in the app
-const email = {};
-
-// Use classes required from questions.js to generate the questions
-const question1 = new ListQuestion("Welcome to the readme generator. Would you like to generate a readme?", "continueYN", ["Yes", "No"]);
-const question2 = new InputQuestion("Enter a file name for your new readme (remember to include the file extension, e.g. README.md):", "readmeFileName");
-const question4 = new InputQuestion("Enter your name:", "name");
-const question5 = new InputQuestion("Enter your GitHub username:", "username");
-const question6 = new InputQuestion("Enter a project title:", "title");
-const question7 = new InputQuestion("Enter the name of the project repository as it appears on Github:", "repo");
-const question8 = new InputQuestion("Enter a project description:", "description");
-const question9 = new InputQuestion("Enter any installation details:", "installation");
-const question10 = new InputQuestion("Enter any usage information:", "usage");
-const question11 = new InputQuestion("Enter any contributing information:", "contributing");
-const question12 = new InputQuestion("Enter information about the testing carried out on the project:", "tests");
-const question13 = new ListQuestion("Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address", "YN", ["Yes", "No"]);
-const question14 = new InputQuestion("Please enter a contact email address:", "address");
-const question15 = new InputQuestion("The email address you entered is not valid. Please enter a valid email address:", "address");
-
-// Promisify the writeFile function
-const writeFileAsync = util.promisify(fs.writeFile);
-
-// Define an async await function which creates a readme based on user input
-async function createReadme() {
+const createReadme = async () => {
     try {
-        // First question: would you like to generate a readme?
-        const { continueYN } = await inquirer.prompt(question1.returnString());
+        const questionOrder = ['welcome', 'filename', 'username', 'githubUser', 'projectTitle', 'githubRepo', 'description', 'installation', 'usage', 'contributing', 'testing', 'githubEmail', 'contactEmail']
+        
+        let responseObj = {};
 
-        if (continueYN === "No") {
-            console.log("Ok, well if you change your mind you know where to find me...");
-            return;
-        };
+        for (let i = 0; i < questionOrder.length; i++) {
+            const questionKey = questionOrder[i];
+            const { type, text } = questionData[questionKey];
+            let question, options;
+            switch (type) {
+                case 'Input':
+                    question = new InputQuestion(text, questionKey);
+                    break;
+                case 'List':
+                    options = questionData[questionKey].options;
+                    question = new ListQuestion(text, questionKey, options);
+                    break;
+                default:
+                    throw `Question type ${type} not handled`;
+            }
+            response = await inquirer.prompt(question.returnString());
+            responseObj[questionKey] = response[questionKey];
+            console.log(responseObj);
+
+            // Next behaviour
+            switch (questionKey) {
+                case 'welcome':
+                    if (responseObj[questionKey] === 'No') {
+                        console.log("Ok, well if you change your mind you know where to find me...");
+                        return;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
 
         // Ask user to enter a file name
         const { readmeFileName } = await inquirer.prompt(question2.returnString());
@@ -109,11 +107,13 @@ async function createReadme() {
 
         // Give a message to tell the user the file has been created.
         console.log("Your README file was created successfully!");
-
-    } catch (error) {
-        console.log(error);
+    }
+    catch (error) {
+        console.log(`Error - controller.js - createReadme() - ${error}`);
     }
 }
 
-// Call the createReadme function
-createReadme();
+// Export createReadme function
+module.exports = {
+    createReadme: createReadme,
+};
