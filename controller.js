@@ -5,12 +5,14 @@ const { InputQuestion, ListQuestion, writeFileAsync, questionData } = require(".
 
 const createReadme = async () => {
     try {
-        const questionOrder = ['welcome', 'filename', 'username', 'githubUser', 'projectTitle', 'githubRepo', 'description', 'installation', 'usage', 'contributing', 'testing', 'githubEmail', 'contactEmail']
-        
         let responseObj = {};
 
-        for (let i = 0; i < questionOrder.length; i++) {
-            const questionKey = questionOrder[i];
+        // Let the initial question
+        let nextQuestion = 'welcome';
+
+        // Continue the sequence of questions until a 'next question' value is not set
+        while (nextQuestion) {
+            const questionKey = nextQuestion;
             const { type, text } = questionData[questionKey];
             let question, options;
             switch (type) {
@@ -24,31 +26,21 @@ const createReadme = async () => {
                 default:
                     throw `Question type ${type} not handled`;
             }
-            response = await inquirer.prompt(question.returnString());
-            responseObj[questionKey] = response[questionKey];
-            console.log(responseObj);
 
-            // Next behaviour
-            switch (questionKey) {
-                case 'welcome':
-                    if (responseObj[questionKey] === 'No') {
-                        console.log("Ok, well if you change your mind you know where to find me...");
-                        return;
-                    }
-                    break;
-                default:
-                    break;
-            }
+            // Use the inquirer module to prompt the user with the question
+            response = await inquirer.prompt(question.returnString());
+
+            // Store the user's response in the responseObj
+            responseObj[questionKey] = response[questionKey];
+
+            nextQuestion = questionData[questionKey]['nextQuestion'](response);
         }
 
-        // Ask user to enter a file name
-        const { readmeFileName } = await inquirer.prompt(question2.returnString());
-
         // Use that file name to generate a file path 
-        const readmeFilePath = `./Generated_README/${readmeFileName}`;
+        const readmeFilePath = `./Generated_README/${responseObj['fileName']}`;
 
         // Generate the question using the file name that the user entered
-        const question3 = new questions.ListQuestion(`A file named ${readmeFileName} already exists in the Generated README folder.\nThis will be overwritten when you run this script.\nDo you want to continue?`, "stillContinueYN", ["Yes", "No"]);
+        const question3 = new questions.ListQuestion();
 
         // Check if there is an existing README file which may be overwritten
         if(fs.existsSync(readmeFilePath)) {
