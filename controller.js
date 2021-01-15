@@ -1,7 +1,16 @@
+// Require in node modules
 const axios = require("axios");
 const inquirer = require("inquirer");
 const validator = require("validator");
-const { InputQuestion, ListQuestion, writeFileAsync, questionData } = require("./model");
+const fs = require("fs");
+const util = require("util");
+
+// Require in local files
+const { InputQuestion, ListQuestion } = require("./helper");
+const { questionData } = require("./questions");
+
+// Promisify the writeFile function
+const writeFileAsync = util.promisify(fs.writeFile);
 
 const createReadme = async () => {
     try {
@@ -29,11 +38,13 @@ const createReadme = async () => {
 
             // Use the inquirer module to prompt the user with the question
             response = await inquirer.prompt(question.returnString());
+            const responseValue = response[questionKey];
 
             // Store the user's response in the responseObj
-            responseObj[questionKey] = response[questionKey];
+            responseObj[questionKey] = responseValue;
 
-            nextQuestion = questionData[questionKey]['nextQuestion'](response);
+            // Feed the response into the nextQuestion method
+            nextQuestion = questionData[questionKey].nextQuestion(responseValue);
         }
 
         // Use that file name to generate a file path 

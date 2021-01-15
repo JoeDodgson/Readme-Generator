@@ -1,43 +1,3 @@
-// Require in node modules
-const fs = require("fs");
-const util = require("util");
-
-// Class for all questions
-class InputQuestion {
-    constructor (message, name) {
-        this.message = message;
-        this.name = name;
-    }
-
-    returnString() {
-        return JSON.parse(`{"message" : "${this.message}",
-        "name" : "${this.name}"}`);
-    }
-}
-
-// Class for 'list' type questions
-class ListQuestion extends InputQuestion {
-    constructor (message, name, choices) {
-        super(message, name);
-        this.type = "list";
-        this.choices = choices;
-    }
-
-    stringifyChoices() {
-        return this.choices.join('","');
-    }
-
-    returnString() {
-        return JSON.parse(`{"type" : "${this.type}",
-        "message" : "${this.message}",
-        "name" : "${this.name}",
-        "choices" : ["${this.stringifyChoices()}"]}`);
-    }
-}
-
-// Promisify the writeFile function
-const writeFileAsync = util.promisify(fs.writeFile);
-
 // Questions data
 let questionData = {
     'welcome': {
@@ -170,8 +130,5 @@ let readme = {}
 
 // Export generated questions array
 module.exports = {
-    InputQuestion : InputQuestion,
-    ListQuestion : ListQuestion,
-    writeFileAsync: writeFileAsync,
     questionData: questionData,
 };
