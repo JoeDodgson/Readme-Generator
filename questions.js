@@ -1,3 +1,6 @@
+// Require in node modules
+const fs = require("fs");
+
 // Questions data
 let questionData = {
     'welcome': {
@@ -18,24 +21,21 @@ let questionData = {
         'text': 'Enter a file name for your new readme (remember to include the file extension, e.g. README.md):',
         'type': 'Input',
         'nextQuestion': response => {
-            // Set the value of the filename to 'self'
-            readme['filename'] = response;
-
             // Check if a file already exists
-            questionData['overwrite']['text'] = `A file named ${readmeFileName} already exists in the Generated README folder.\nThis will be overwritten when you run this script.\nDo you want to continue?`
+            questionData['overwrite']['text'] = `A file named ${response} already exists in the Generated README folder.\nThis will be overwritten when you run this script.\nDo you want to continue?`
             return 'username';
         }
     },
     'overwrite': {
-        'text': ``,
+        'text': null,
         'options': ["Yes", "No"],
         'type': 'List',
         'nextQuestion': response => {
             switch (response) {
                 case 'Yes':
-                    return 'filename';
+                    return 'createFile';
                 case 'No':
-                    console.log("Ok, well if you change your mind you know where to find me...");
+                    console.log("Come back once you have backed up your existing file.");
                     return;
             }
         }
@@ -110,18 +110,39 @@ let questionData = {
         'nextQuestion': response => {
             switch (response) {
                 case 'Yes':
-                    return 'filename';
+                    return 'checkFileExists';
                 case 'No':
-                    console.log("Ok, well if you change your mind you know where to find me...");
-                    return;
+                    return 'contactEmail';
             }
         }
     },
     'contactEmail': {
-        'text': 'Please enter a contact email address:',
+        'text': 'Please enter an alternative contact email address:',
         'type': 'Input',
         'nextQuestion': response => {
-            return 'username';
+            return 'checkFileExists';
+        }
+    },
+    'checkFileExists': {
+        'text': null,
+        'type': 'Action',
+        'action': () => {},
+        'nextQuestion': response => {
+            // TODO - properly format the file path
+            const readmeFilePath = `./Generated_README/${response['fileName']}`;
+            if(fs.existsSync(readmeFilePath)) {
+                return 'overwrite';
+            }
+            else {
+                return 'createFile';
+            }
+        }
+    },
+    'createFile': {
+        'text': null,
+        'type': 'Action',
+        'action': () => {},
+        'nextQuestion': response => {
         }
     },
 }

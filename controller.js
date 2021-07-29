@@ -14,16 +14,16 @@ const writeFileAsync = util.promisify(fs.writeFile);
 
 const createReadme = async () => {
     try {
+        let question, options, responseValue;
         let responseObj = {};
 
-        // Let the initial question
-        let nextQuestion = 'welcome';
+        // Set the initial question
+        let nextQuestionKey = 'welcome';
 
         // Continue the sequence of questions until a 'next question' value is not set
-        while (nextQuestion) {
-            const questionKey = nextQuestion;
+        while (nextQuestionKey) {
+            const questionKey = nextQuestionKey;
             const { type, text } = questionData[questionKey];
-            let question, options;
             switch (type) {
                 case 'Input':
                     question = new InputQuestion(text, questionKey);
@@ -32,45 +32,34 @@ const createReadme = async () => {
                     options = questionData[questionKey].options;
                     question = new ListQuestion(text, questionKey, options);
                     break;
+                case 'Action':
+                    questionData[questionKey].action();
+                    break;
                 default:
                     throw `Question type ${type} not handled`;
             }
 
-            // Use the inquirer module to prompt the user with the question
-            response = await inquirer.prompt(question.returnString());
-            const responseValue = response[questionKey];
+            if (type === 'Input' || type === 'List') {
+                // Use the inquirer module to prompt the user with the question
+                response = await inquirer.prompt(question.returnString());
+                responseValue = response[questionKey];
+    
+                // Store the user's response in the responseObj
+                responseObj[questionKey] = responseValue;
+            }
 
-            // Store the user's response in the responseObj
-            responseObj[questionKey] = responseValue;
+            else if (type === 'Action') {
+                responseValue = responseObj;
+            }
 
             // Feed the response into the nextQuestion method
-            nextQuestion = questionData[questionKey].nextQuestion(responseValue);
+            nextQuestionKey = questionData[questionKey].nextQuestion(responseValue);
         }
-
-        // Use that file name to generate a file path 
-        const readmeFilePath = `./Generated_README/${responseObj['fileName']}`;
-
-        // Generate the question using the file name that the user entered
-        const question3 = new questions.ListQuestion();
-
-        // Check if there is an existing README file which may be overwritten
-        if(fs.existsSync(readmeFilePath)) {
-            // Tell user this will overwrite existing README file. Ask if they want to continue
-            const { stillContinueYN } = await inquirer.prompt(question3.returnString());
-            
-            if (stillContinueYN === "No") {
-                console.log("Come back once you have backed up your existing file.");
-                return;
-            };
-        }
-
-        // Using inquirer, get the input information needed from the user
-        const answers = await inquirer.prompt([question4.returnString(), question5.returnString(), question6.returnString(), question7.returnString(), question8.returnString(), question9.returnString(), question10.returnString(), question11.returnString(), question12.returnString()]);
 
         // Use the Github username entered by the user to form a Github API query URL
-        const queryUrl = `https://api.github.com/users/${answers.username}`;
+        const queryUrl = `https://api.github.com/users/${responseObj['githubUser']}`;
         
-        // Perform a .get method API call using axios, feeding in the queryURL
+        // Perform a get request to github API
         const { data } = await axios.get(queryUrl);
 
         // Check if there is an email associated with the Github user account
