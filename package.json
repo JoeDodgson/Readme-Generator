@@ -4,7 +4,8 @@
   "description": "Generates a good readme.md file based on user input",
   "main": "index.js",
   "scripts": {
-    "runCode": "nodemon script.js"
+    "start": "node view.js",
+    "dev": "nodemon view.js"
   },
   "repository": {
     "type": "git",
