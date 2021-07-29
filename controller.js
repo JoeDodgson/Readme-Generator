@@ -1,7 +1,5 @@
 // Require in node modules
-const axios = require("axios");
 const inquirer = require("inquirer");
-const validator = require("validator");
 const fs = require("fs");
 const util = require("util");
 
@@ -53,39 +51,7 @@ const createReadme = async () => {
             }
 
             // Feed the response into the nextQuestion method
-            nextQuestionKey = questionData[questionKey].nextQuestion(responseValue);
-        }
-
-        // Use the Github username entered by the user to form a Github API query URL
-        const queryUrl = `https://api.github.com/users/${responseObj['githubUser']}`;
-        
-        // Perform a get request to github API
-        const { data } = await axios.get(queryUrl);
-
-        // Check if there is an email associated with the Github user account
-        if(data.email){
-            // Ask user if they want to use Github email
-            const includeGithubEmail = await inquirer.prompt(question13.returnString());
-
-            if(includeGithubEmail.YN === "Yes"){
-                email.address =  data.email;
-            }
-        }
-
-        // If no Github email exists or user chose not to include, ask to provide alternative email
-        if(!data.email || includeGithubEmail.YN === "No"){
-            // Ask the user to enter an alternative email
-            let alternativeEmail = await inquirer.prompt(question14.returnString());
-
-            // Check if the user has entered a valid email address. 
-            let trueEmail = validator.isEmail(alternativeEmail.address);
-            
-            // If user has not entered a valid email address, ask them to enter a different one
-            while (!trueEmail) {
-                alternativeEmail = await inquirer.prompt(question15.returnString());
-                trueEmail = validator.isEmail(alternativeEmail.address);
-            }
-            email.address = alternativeEmail.address;
+            nextQuestionKey = await questionData[questionKey].nextQuestion(responseValue);
         }
 
         // Use the Github username and repo name to form a license shield URL
