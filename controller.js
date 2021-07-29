@@ -1,6 +1,5 @@
 // Require in node modules
 const inquirer = require("inquirer");
-const fs = require("fs");
 
 // Require in local files
 const { InputQuestion, ListQuestion } = require("./helper");
@@ -36,6 +35,13 @@ const createReadme = async () => {
             if (type === 'Input' || type === 'List') {
                 // Use the inquirer module to prompt the user with the question
                 response = await inquirer.prompt(question.returnString());
+
+                // Validate the user has entered a response
+                if (!response[questionKey]) {
+                    console.log(`Response cannot be empty.`)
+                    continue;
+                }
+
                 responseValue = response[questionKey];
     
                 // Store the user's response in the responseObj
