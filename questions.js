@@ -75,9 +75,14 @@ let questionData = {
             try {
                 // Use the Github username entered by the user to form a Github API query URL
                 const queryUrl = `https://api.github.com/users/${response}`;
+
+                // Set accept header for request
+                const axiosGithub = axios.create({
+                    headers: { 'Accept': 'application/vnd.github.v3+json' }
+                });
             
                 // Perform a get request to Github API
-                const { data } = await axios.get(queryUrl);
+                const { data } = await axiosGithub.get(queryUrl);
             
                 // Check if there is an email associated with the Github user account
                 if(data.email){
