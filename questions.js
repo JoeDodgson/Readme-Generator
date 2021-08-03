@@ -112,7 +112,7 @@ let questionData = {
         'type': 'Input',
         'nextQuestion': response => {
             // Check if the user has entered a valid email address. 
-            let validEmail = validator.isEmail(response);
+            const validEmail = validator.isEmail(response);
 
             // If user has not entered a valid email address, ask them to enter a different one
             if (validEmail) {
