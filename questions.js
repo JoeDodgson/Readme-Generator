@@ -75,12 +75,28 @@ let questionData = {
             try {
                 // Use the Github username entered by the user to form a Github API query URL
                 const queryUrl = `https://api.github.com/users/${response}`;
+
+                // Set accept header for request
+                const axiosGithub = axios.create({
+                    headers: { 'Accept': 'application/vnd.github.v3+json' }
+                });
             
-                // Perform a get request to Github API
-                const { data } = await axios.get(queryUrl);
+                // Perform a get request to Github API using queryUrl
+                const userResponse = await axiosGithub.get(queryUrl);
+                const userData = userResponse.data;
+
+                // Perform a get request to Github API using repos_url in the response
+                if (userData.repos_url) {
+                    const userReposResponse = await axiosGithub.get(userData.repos_url);
+                    const userReposData = userReposResponse.data;
+                    const repoNames = userReposData.map(repo => repo.name);
+                    if (repoNames.length > 0) {
+                        questionData.githubRepo.options = repoNames.concat(questionData.githubRepo.options);
+                    }
+                }
             
                 // Check if there is an email associated with the Github user account
-                if(data.email){
+                if(userData.email){
                     return 'githubEmail';
                 }
                 else {
@@ -94,8 +110,9 @@ let questionData = {
             }
         }
     },
+    // TODO - ask user if they would like to leave a contact email
     'githubEmail': {
-        'text': 'Are you happy for your github email address to be used as your contact email? If not, enter an alternative email address',
+        'text': 'Are you happy for your github email address to be used as contact information?',
         'options': ["Yes", "No"],
         'type': 'List',
         'nextQuestion': response => {
@@ -116,7 +133,7 @@ let questionData = {
 
             // If user has not entered a valid email address, ask them to enter a different one
             if (validEmail) {
-                return 'githubRepo'
+                return 'githubRepo';
             }
             console.log('Invalid email address.')
             return 'contactEmail';
@@ -124,7 +141,18 @@ let questionData = {
     },
     // TODO - query the Github API to get a list of the user's repos
     'githubRepo': {
-        'text': 'Enter the name of the project repository as it appears on Github:',
+        'text': 'Enter select the Github repository:',
+        'type': 'List',
+        'options': ['other'],
+        'nextQuestion': response => {
+            if (response === 'other') {
+                return 'enterRepoName';
+            }
+            return 'projectTitle';
+        }
+    },
+    'enterRepoName': {
+        'text': 'Enter a new repository name:',
         'type': 'Input',
         'nextQuestion': response => {
             return 'projectTitle';
